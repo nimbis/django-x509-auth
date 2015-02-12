@@ -29,8 +29,8 @@ class CertAuthView(TemplateView):
         context = self.get_context_data(**kwargs)
 
         try:
-            dn = request.META['HTTP_X_SSL_USER_DN'])
-            verified = request.META['HTTP_X_SSL_AUTHENTICATED'])
+            dn = request.META['HTTP_X_SSL_USER_DN']
+            verified = request.META['HTTP_X_SSL_AUTHENTICATED']
         except KeyError:
             # HTTP headers not set
             messages.error(self.request,
