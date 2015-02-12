@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block body %}
+<form>
+<input type="button" value="Try again" onClick="window.location.reload()">
+</form>
+{% if HTTP_X_SSL_User_DN %}
+<p>Certificate Subject was {{ HTTP_X_SSL_User_DN }}</p>
+{% endif %}
+{% if HTTP_X_SSL_Authenticated %}
+<p>SSL status was {{ HTTP_X_SSL_Authenticated }}</p>
+{% endif %}
+{% endblock %}
