@@ -42,9 +42,9 @@ class CertAuthView(TemplateView):
 
         try:
             user = self.get_user_from_cert(
-                dn=request.META['HTTP_X-SSL-User-DN'])
+                dn=request.META['HTTP_X_SSL_User_DN'])
             verified = self.is_ssl_verified(
-                verified=request.META['HTTP_X-SSL-Authenticated'])
+                verified=request.META['HTTP_X_SSL_Authenticated'])
         except KeyError:
             # HTTP headers not set
             messages.error(self.request,
@@ -59,9 +59,9 @@ class CertAuthView(TemplateView):
             else:
                 return HttpResponseRedirect('/')
         else:
-            for k in ['HTTP_X-SSL-User-DN', 'HTTP_X-SSL-Authenticated']:
+            for k in ['HTTP_X_SSL_User_DN', 'HTTP_X_SSL_Authenticated']:
                 # no hyphens in context variables
-                context[k] = request.META[k].replace('-','_')
+                context[k] = request.META[k]
             return self.render_to_response(context)
 
 
