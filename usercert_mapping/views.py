@@ -3,7 +3,7 @@ from __future__ import absolute_import
 
 import logging
 
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
 from django.contrib import messages
