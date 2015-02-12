@@ -13,7 +13,7 @@ class AuthenticationBackend(ModelBackend):
         Try to look up User in UserCertMaps, returning None if not found
         '''
 
-        if 'dn' not credentials or 'verified' not in credentials:
+        if 'dn' not in credentials or 'verified' not in credentials:
             return None
 
         if not credentials['verified'] == 'SUCCESS':
