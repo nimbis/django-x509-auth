@@ -25,26 +25,12 @@ class CertAuthView(TemplateView):
         context = super(CertAuthView, self).get_context_data(**kwargs)
         return context
 
-    def get_user_from_cert(self, dn=''):
-        '''
-        Try to look up User in UserCertMaps, returning None if not found
-        '''
-        try:
-            return UserCertMapping.objects.get(cert_dn=dn).user
-        except UserCertMapping.DoesNotExist:
-            return None
-
-    def is_ssl_verified(self, verified=''):
-        return verified == 'SUCCESS'
-
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
 
         try:
-            user = self.get_user_from_cert(
-                dn=request.META['HTTP_X_SSL_USER_DN'])
-            verified = self.is_ssl_verified(
-                verified=request.META['HTTP_X_SSL_AUTHENTICATED'])
+            dn = request.META['HTTP_X_SSL_USER_DN'])
+            verified = request.META['HTTP_X_SSL_AUTHENTICATED'])
         except KeyError:
             # HTTP headers not set
             messages.error(self.request,
@@ -52,7 +38,9 @@ class CertAuthView(TemplateView):
                 'that your user certificate to loaded in your browser.')
             return self.render_to_response(context)
 
-        if user and verified:
+        # requires our backend
+        user = authenticate(dn=dn, verified=verified)
+        if user is not None:
             login(request, user)
             if 'next' in request.GET:
                 return HttpResponseRedirect(request.GET['next'])
