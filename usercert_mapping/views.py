@@ -9,7 +9,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 
 from .models import UserCertMapping
 
@@ -86,7 +86,7 @@ class CertCreateView(CreateView):
     model = UserCertMapping
     template_name = 'usercert_mapping/create.html'
     fields = ['cert_dn']
-    success_url = reverse('list')
+    success_url = reverse_lazy('list')
 
     def form_valid(self, form):
         '''
