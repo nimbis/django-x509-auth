@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Certs</h1>
+{% if HTTP_X_SSL_AUTHORIZED %}
+You are using this new certificate:
+<form action="{% url 'map' %}" method="post">
+  {% csrf_token %}
+  <p>
+    <label for="id_cert_dn">Cert Distinguished Name (DN):</label>
+    <input id="id_cert_dn" maxlength="1024" name="cert_dn" type="text" value="{{ HTTP_X_SSL_USER_DN }}" disabled="disabled" />
+    <span class="helptext">Certificate matter to match on.</span>
+  </p>
+  <input type="submit" value="Add Certificate" />
+</form>
+{% endif %}
+<ul>
+{% for usercert in object_list %}
+  <li>{{ usercert.user }} - {{ usercert.cert_dn }}</li>
+{% empty %}
+  <li>No usercerts yet.</li>
+{% endfor %}
+</ul>
+{% endblock %}

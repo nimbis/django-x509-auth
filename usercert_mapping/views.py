@@ -5,6 +5,8 @@ import logging
 
 from django.contrib.auth import login, authenticate
 from django.views.generic import TemplateView
+from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 
@@ -53,21 +55,41 @@ class CertAuthView(TemplateView):
             return self.render_to_response(context)
 
 
-class CertMapView(TemplateView):
-    '''
-    View to map X.509 cert to a User
-    '''
+class CertListView(ListView):
 
-    template_name = "usercert_mapping/cert_auth.html"
+    model = UserCertMapping
+    template_name = 'usercert_mapping/list.html'
 
     def get_context_data(self, **kwargs):
-        context = super(CertMapView, self).get_context_data(**kwargs)
+        context = super(CertListView, self).get_context_data(**kwargs)
+        if (('HTTP_X_SSL_USER_DN' in self.request.META) and
+            ('HTTP_X_SSL_AUTHENTICATED' in self.request.META)):
+            # A key is asserted, see if we already have it
+            if UserCertMapping.objects.filter(user=self.request.user,
+                cert_dn=self.request.META['HTTP_X_SSL_USER_DN']).count() == 0:
+                for k in ['HTTP_X_SSL_USER_DN', 'HTTP_X_SSL_AUTHENTICATED']:
+                    # Put in the context for possible addition
+                    context[k] = self.request.META[k]
         return context
 
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        for k in request.META:
-            print k, request.META[k]
-            context[k] = request.META[k]
-        print context
-        return self.render_to_response(context)
+    def get_queryset(self):
+        '''
+        Limit query set to logged in user
+        '''
+        print self.request.user
+        return self.model.objects.filter(user=self.request.user)
+
+
+class CertCreateView(CreateView):
+
+    model = UserCertMapping
+    template_name = 'usercert_mapping/create.html'
+    fields = ['cert_dn']
+
+    def form_valid(self, form):
+        '''
+        Force user to logged in user
+        '''
+        form.instance.user = self.request.user
+        super(CertCreateView, self).form_valid(form)
+        return HttpResponseRedirect(reverse('usercert_mapping:list'))
