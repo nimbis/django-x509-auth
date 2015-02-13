@@ -8,6 +8,10 @@ from .views import CertAuthView, CertCreateView, CertListView
 urlpatterns = patterns(
     '',
     url(r'^auth/$', CertAuthView.as_view(), name='auth'),
-    url(r'^map/$', CertCreateView.as_view(), name='map'),
-    url(r'^list/$', CertListView.as_view(), name='list'),
+    url(r'^map/$',
+        login_required(CertCreateView.as_view()),
+        name='map'),
+    url(r'^list/$',
+        login_required(CertListView.as_view(),
+        name='list'),
 )
