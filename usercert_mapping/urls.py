@@ -12,6 +12,6 @@ urlpatterns = patterns(
         login_required(CertCreateView.as_view()),
         name='map'),
     url(r'^list/$',
-        login_required(CertListView.as_view(),
+        login_required(CertListView.as_view()),
         name='list'),
 )
