@@ -4,7 +4,7 @@ from __future__ import absolute_import
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
-from .views import CertAuthView, CertCreateView, CertListView
+from .views import CertAuthView, CertCreateView, CertListView, CertDeleteView
 
 urlpatterns = patterns(
     '',
@@ -15,4 +15,7 @@ urlpatterns = patterns(
     url(r'^list/$',
         login_required(CertListView.as_view()),
         name='list'),
+    url(r'^delete/(?P<pk>\d+)$',
+        login_required(CertDeleteView.as_view()),
+        name='delete'),
 )

@@ -6,8 +6,8 @@ import logging
 from django.contrib.auth import login, authenticate
 from django.views.generic import TemplateView
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView
-from django.http import HttpResponseRedirect
+from django.views.generic.edit import CreateView, DeleteView
+from django.http import HttpResponseRedirect, Http404
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 
@@ -17,10 +17,10 @@ logger = logging.getLogger(__name__)
 
 
 class CertAuthView(TemplateView):
-    '''
+    """
     View to look for HTTP headers and if found, map and authenticate a user
     (if possible)
-    '''
+    """
 
     template_name = "usercert_mapping/cert_auth.html"
 
@@ -45,13 +45,12 @@ class CertAuthView(TemplateView):
         user = authenticate(dn=dn, verified=verified)
         if user is not None:
             login(request, user)
-            if 'next' in request.GET:
+            try:
                 return HttpResponseRedirect(request.GET['next'])
-            else:
+            except KeyError:
                 return HttpResponseRedirect('/')
         else:
             for k in ['HTTP_X_SSL_USER_DN', 'HTTP_X_SSL_AUTHENTICATED']:
-                # no hyphens in context variables
                 context[k] = request.META[k]
             return self.render_to_response(context)
 
@@ -74,10 +73,9 @@ class CertListView(ListView):
         return context
 
     def get_queryset(self):
-        '''
+        """
         Limit query set to logged in user
-        '''
-        print self.request.user
+        """
         return self.model.objects.filter(user=self.request.user)
 
 
@@ -89,8 +87,22 @@ class CertCreateView(CreateView):
     success_url = reverse_lazy('list')
 
     def form_valid(self, form):
-        '''
+        """
         Force user to logged in user
-        '''
+        """
         form.instance.user = self.request.user
         return super(CertCreateView, self).form_valid(form)
+
+
+class CertDeleteView(DeleteView):
+
+    model = UserCertMapping
+    template_name = 'usercert_mapping/delete.html'
+    success_url = reverse_lazy('list')
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(DeleteView, self).get_object()
+        if not obj.user == self.request.user:
+            raise Http404
+        return obj

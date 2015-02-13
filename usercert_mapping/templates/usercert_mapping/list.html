@@ -14,7 +14,7 @@ You are using this new certificate:
 {% endif %}
 <ul>
 {% for usercert in object_list %}
-  <li>{{ usercert.user }} - {{ usercert.cert_dn }}</li>
+  <li>{{ usercert.user }} - {{ usercert.cert_dn }} <a href="{% url 'delete' pk=usercert.pk %}">Delete</a></li>
 {% empty %}
   <li>No usercerts yet.</li>
 {% endfor %}
