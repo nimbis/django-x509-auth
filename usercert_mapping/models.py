@@ -20,3 +20,6 @@ class UserCertMapping(models.Model):
         max_length=1024,
         blank=False,
         unique=True)
+
+    def __str__(self):
+        return "{0}:{1}".format(self.user.username, self.cert_dn)
