@@ -85,11 +85,11 @@ class CertCreateView(CreateView):
     model = UserCertMapping
     template_name = 'usercert_mapping/create.html'
     fields = ['cert_dn']
+    success_url = reverse('list')
 
     def form_valid(self, form):
         '''
         Force user to logged in user
         '''
         form.instance.user = self.request.user
-        super(CertCreateView, self).form_valid(form)
-        return HttpResponseRedirect(reverse('usercert_mapping:list'))
+        return super(CertCreateView, self).form_valid(form)
