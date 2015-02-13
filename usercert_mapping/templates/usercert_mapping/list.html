@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
 <h1>Certs</h1>
-{% if HTTP_X_SSL_AUTHORIZED %}
+{% if HTTP_X_SSL_AUTHENTICATED %}
 You are using this new certificate:
 <form action="{% url 'map' %}" method="post">
   {% csrf_token %}
