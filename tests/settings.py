@@ -118,7 +118,7 @@ SOUTH_TESTS_MIGRATE = False
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
-    'usercert_mapping.auth_backend.AuthenticationBackend',
+    'x509_auth.auth_backend.AuthenticationBackend',
 )
 
 INSTALLED_APPS = (
