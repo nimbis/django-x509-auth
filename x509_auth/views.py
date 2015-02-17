@@ -37,8 +37,9 @@ class CertAuthView(TemplateView):
         except KeyError:
             # HTTP headers not set
             messages.error(self.request,
-                'We did not get any certificate information.  Please verify '
-                'that your user certificate to loaded in your browser.')
+                           'We did not get any certificate information.  '
+                           'Please verify that your user certificate to '
+                           'loaded in your browser.')
             return self.render_to_response(context)
 
         # requires our backend
@@ -63,10 +64,12 @@ class CertListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(CertListView, self).get_context_data(**kwargs)
         if (('HTTP_X_SSL_USER_DN' in self.request.META) and
-            ('HTTP_X_SSL_AUTHENTICATED' in self.request.META)):
+           ('HTTP_X_SSL_AUTHENTICATED' in self.request.META)):
             # A key is asserted, see if we already have it
-            if UserCertMapping.objects.filter(user=self.request.user,
-                cert_dn=self.request.META['HTTP_X_SSL_USER_DN']).count() == 0:
+            certs = UserCertMapping.objects.filter(
+                user=self.request.user,
+                cert_dn=self.request.META['HTTP_X_SSL_USER_DN'])
+            if certs.count() == 0:
                 for k in ['HTTP_X_SSL_USER_DN', 'HTTP_X_SSL_AUTHENTICATED']:
                     # Put in the context for possible addition
                     context[k] = self.request.META[k]
