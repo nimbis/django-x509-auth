@@ -22,7 +22,7 @@ class CertAuthView(TemplateView):
     (if possible)
     """
 
-    template_name = "usercert_mapping/cert_auth.html"
+    template_name = "x509_auth/cert_auth.html"
 
     def get_context_data(self, **kwargs):
         context = super(CertAuthView, self).get_context_data(**kwargs)
@@ -58,7 +58,7 @@ class CertAuthView(TemplateView):
 class CertListView(ListView):
 
     model = UserCertMapping
-    template_name = 'usercert_mapping/list.html'
+    template_name = 'x509_auth/list.html'
 
     def get_context_data(self, **kwargs):
         context = super(CertListView, self).get_context_data(**kwargs)
@@ -82,7 +82,7 @@ class CertListView(ListView):
 class CertCreateView(CreateView):
 
     model = UserCertMapping
-    template_name = 'usercert_mapping/create.html'
+    template_name = 'x509_auth/create.html'
     fields = ['cert_dn']
     success_url = reverse_lazy('list')
 
@@ -97,7 +97,7 @@ class CertCreateView(CreateView):
 class CertDeleteView(DeleteView):
 
     model = UserCertMapping
-    template_name = 'usercert_mapping/delete.html'
+    template_name = 'x509_auth/delete.html'
     success_url = reverse_lazy('list')
 
     def get_object(self, queryset=None):

@@ -29,7 +29,7 @@ test: check-venv clean
 # code coverage
 #
 
-COVERAGE_INCLUDE='usercert_mapping/*'
+COVERAGE_INCLUDE='x509_auth/*'
 
 coverage: check-venv
 	coverage erase

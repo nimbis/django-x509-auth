@@ -6,7 +6,7 @@ reqs = parse_requirements("requirements/common.txt")
 
 # setup the project
 setup(
-    name="django-usercert-mapping",
+    name="django-x509-auth",
     version="0.0.1",
     author="Nimbis Services, Inc.",
     author_email="info@nimbisservices.com",
