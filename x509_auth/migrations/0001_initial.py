@@ -9,17 +9,17 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding model 'UserCertMapping'
-        db.create_table(u'usercert_mapping_usercertmapping', (
+        db.create_table(u'x509_auth_usercertmapping', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(default=None, related_name=u'usercert_mapping_usercertmapping_related', null=True, blank=True, to=orm['auth.User'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(default=None, related_name=u'x509_auth_usercertmapping_related', null=True, blank=True, to=orm['auth.User'])),
             ('cert_dn', self.gf('django.db.models.fields.CharField')(unique=True, max_length=1024)),
         ))
-        db.send_create_signal(u'usercert_mapping', ['UserCertMapping'])
+        db.send_create_signal(u'x509_auth', ['UserCertMapping'])
 
 
     def backwards(self, orm):
         # Deleting model 'UserCertMapping'
-        db.delete_table(u'usercert_mapping_usercertmapping')
+        db.delete_table(u'x509_auth_usercertmapping')
 
 
     models = {
@@ -59,12 +59,12 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'usercert_mapping.usercertmapping': {
+        u'x509_auth.usercertmapping': {
             'Meta': {'object_name': 'UserCertMapping'},
             'cert_dn': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '1024'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'related_name': "u'usercert_mapping_usercertmapping_related'", 'null': 'True', 'blank': 'True', 'to': u"orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'related_name': "u'x509_auth_usercertmapping_related'", 'null': 'True', 'blank': 'True', 'to': u"orm['auth.User']"})
         }
     }
 
-    complete_apps = ['usercert_mapping']
+    complete_apps = ['x509_auth']
