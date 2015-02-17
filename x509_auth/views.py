@@ -57,6 +57,10 @@ class CertAuthView(TemplateView):
 
 
 class CertListView(ListView):
+    """
+    Lists out certificates owned by request.user.  If there is a certificate
+    asserted in the request, and we don't have record of it, offers to add it.
+    """
 
     model = UserCertMapping
     template_name = 'x509_auth/list.html'
@@ -83,6 +87,10 @@ class CertListView(ListView):
 
 
 class CertCreateView(CreateView):
+    """
+    Does UserCertMapping creation.  Forces the user attribute to be the
+    user that is currently logged in.
+    """
 
     model = UserCertMapping
     template_name = 'x509_auth/create.html'
@@ -98,6 +106,10 @@ class CertCreateView(CreateView):
 
 
 class CertDeleteView(DeleteView):
+    """
+    Performs delete.  User will get a confirmation, and user may only
+    delete mappings owned by themselves.
+    """
 
     model = UserCertMapping
     template_name = 'x509_auth/delete.html'
