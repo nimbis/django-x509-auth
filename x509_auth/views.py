@@ -73,7 +73,7 @@ class CertListView(ListView):
             certs = UserCertMapping.objects.filter(
                 user=self.request.user,
                 cert_dn=self.request.META['HTTP_X_SSL_USER_DN'])
-            if certs.count() == 0:
+            if not certs.exists():
                 for k in ['HTTP_X_SSL_USER_DN', 'HTTP_X_SSL_AUTHENTICATED']:
                     # Put in the context for possible addition
                     context[k] = self.request.META[k]
