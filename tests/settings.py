@@ -107,9 +107,6 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'tests.urls'
 
-# Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'cmsplugin_contactusproduct.wsgi.application'
-
 TEMPLATE_DIRS = (
 )
 
