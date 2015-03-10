@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Django X509 auth</title>
+</head>
+<body>
+
+<!-- messages -->
+{% block messages %}
+{% for message in messages %}
+  {% if forloop.first %}
+<div class="container messages-container">
+  {% endif %}
+  <div class="alert alert-{{ message.tags }} fade in" data-alert="alert">
+    <a class="close" data-dismiss="alert" href="#" aria-hidden="true"{% if message.pk %} close-href="{% url "message_mark_read" message.pk %}"{% endif %}>&times;</a>
+    {{ message }}
+  </div>
+  {% if forloop.last %}
+</div>
+  {% endif %}
+{% endfor %}
+{% endblock %}
+
+<div class="container-fluid">
+  {% block content %}
+    {% block header %}
+      <div class="section_header">
+        <h2>{% block title %}{% endblock %}</h2>
+      </div>
+    {% block body %}{% endblock %}
+    {% endblock %}
+    {% block main %}{% endblock %}
+  {% endblock %}<!-- content -->
+
+  {% block footer %}
+  <footer id="footer">
+  </footer>
+  {% endblock %}<!-- footer -->
+</div>
+
+</body>
+</html>

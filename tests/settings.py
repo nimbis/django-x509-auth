@@ -1,4 +1,5 @@
-# Django settings for contactusproduct project.
+# Django settings for django-x509-auth project.
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -105,9 +106,20 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'tests.urls'
+ROOT_URLCONF = 'x509_auth.urls'
+
+# project slug has dashes
+PROJECT_SLUG = os.environ.get('PROJECT_SLUG', 'shop-core')
+PROJECT_NAME = os.environ.get('PROJECT_LABEL', 'shop_core')
+
+BASE_PATH = os.environ.get('BASE_PATH', os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '..')))
+
+PROJECT_PATH = os.environ.get('PROJECT_PATH', os.path.join(
+    BASE_PATH))
 
 TEMPLATE_DIRS = (
+    os.path.join(PROJECT_PATH, 'tests/templates'),
 )
 
 SOUTH_TESTS_MIGRATE = False
