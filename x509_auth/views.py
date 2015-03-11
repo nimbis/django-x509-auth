@@ -11,21 +11,21 @@ from django.http import HttpResponseRedirect, Http404
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 
-from .models import UserCertMapping
+from .models import X509UserMapping
 
 logger = logging.getLogger(__name__)
 
 
-class CertAuthView(TemplateView):
+class X509AuthView(TemplateView):
     """
     View to look for HTTP headers and if found, map and authenticate a user
     (if possible)
     """
 
-    template_name = "x509_auth/cert_auth.html"
+    template_name = "x509_auth/auth.html"
 
     def get_context_data(self, **kwargs):
-        context = super(CertAuthView, self).get_context_data(**kwargs)
+        context = super(X509AuthView, self).get_context_data(**kwargs)
         return context
 
     def get(self, request, *args, **kwargs):
@@ -56,21 +56,21 @@ class CertAuthView(TemplateView):
             return self.render_to_response(context)
 
 
-class CertListView(ListView):
+class X509ListView(ListView):
     """
     Lists out certificates owned by request.user.  If there is a certificate
     asserted in the request, and we don't have record of it, offers to add it.
     """
 
-    model = UserCertMapping
+    model = X509UserMapping
     template_name = 'x509_auth/list.html'
 
     def get_context_data(self, **kwargs):
-        context = super(CertListView, self).get_context_data(**kwargs)
+        context = super(X509ListView, self).get_context_data(**kwargs)
         if (('HTTP_X_SSL_USER_DN' in self.request.META) and
            ('HTTP_X_SSL_AUTHENTICATED' in self.request.META)):
             # A key is asserted, see if we already have it
-            certs = UserCertMapping.objects.filter(
+            certs = X509UserMapping.objects.filter(
                 user=self.request.user,
                 cert_dn=self.request.META['HTTP_X_SSL_USER_DN'])
             if not certs.exists():
@@ -86,13 +86,13 @@ class CertListView(ListView):
         return self.model.objects.filter(user=self.request.user)
 
 
-class CertCreateView(CreateView):
+class X509CreateView(CreateView):
     """
-    Does UserCertMapping creation.  Forces the user attribute to be the
+    Does X509UserMapping creation.  Forces the user attribute to be the
     user that is currently logged in.
     """
 
-    model = UserCertMapping
+    model = X509UserMapping
     template_name = 'x509_auth/create.html'
     fields = ['cert_dn']
     success_url = reverse_lazy('list')
@@ -102,22 +102,22 @@ class CertCreateView(CreateView):
         Force user to logged in user
         """
         form.instance.user = self.request.user
-        return super(CertCreateView, self).form_valid(form)
+        return super(X509CreateView, self).form_valid(form)
 
 
-class CertDeleteView(DeleteView):
+class X509DeleteView(DeleteView):
     """
     Performs delete.  User will get a confirmation, and user may only
     delete mappings owned by themselves.
     """
 
-    model = UserCertMapping
+    model = X509UserMapping
     template_name = 'x509_auth/delete.html'
     success_url = reverse_lazy('list')
 
     def get_object(self, queryset=None):
         """ Hook to ensure object is owned by request.user. """
-        obj = super(DeleteView, self).get_object()
+        obj = super(X509DeleteView, self).get_object()
         if not obj.user == self.request.user:
             raise Http404
         return obj

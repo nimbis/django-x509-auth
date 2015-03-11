@@ -2,13 +2,13 @@
 from __future__ import absolute_import
 
 from django.contrib import admin
-from .models import UserCertMapping
+from .models import X509UserMapping
 
 
-class UserCertMappingAdmin(admin.ModelAdmin):
+class X509UserMappingAdmin(admin.ModelAdmin):
     """
-    Admin model for UserCertMapping
+    Admin model for X509UserMapping
     """
     pass
 
-admin.site.register(UserCertMapping, UserCertMappingAdmin)
+admin.site.register(X509UserMapping, X509UserMappingAdmin)

@@ -3,7 +3,7 @@ from __future__ import absolute_import
 
 from django.contrib.auth.backends import ModelBackend
 
-from .models import UserCertMapping
+from .models import X509UserMapping
 
 
 class AuthenticationBackend(ModelBackend):
@@ -20,6 +20,6 @@ class AuthenticationBackend(ModelBackend):
             return None
 
         try:
-            return UserCertMapping.objects.get(cert_dn=credentials['dn']).user
-        except UserCertMapping.DoesNotExist:
+            return X509UserMapping.objects.get(cert_dn=credentials['dn']).user
+        except X509UserMapping.DoesNotExist:
             return None

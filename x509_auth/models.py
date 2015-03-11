@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class UserCertMapping(models.Model):
+class X509UserMapping(models.Model):
     """ 1:M mapping of Users to certificate (X.509) DNs (subjects) """
 
     user = models.ForeignKey(

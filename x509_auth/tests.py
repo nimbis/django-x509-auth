@@ -8,19 +8,18 @@ from django.contrib.auth import login, authenticate
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
-from .models import UserCertMapping
+from .models import X509UserMapping
 
 
-class UserCertMappingTest(TestCase):
+class X509UserMappingTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.create(username="test")
         self.dn = "AwesomeDN"
-        self.mapping = UserCertMapping.objects.create(
+        self.mapping = X509UserMapping.objects.create(
             user=self.user,
             cert_dn=self.dn)
         self.c = Client()
-
 
     def test_programmatic_auth(self):
         """
@@ -71,7 +70,6 @@ class UserCertMappingTest(TestCase):
                               HTTP_X_SSL_USER_DN=self.dn,
                               HTTP_X_SSL_AUTHENTICATED='ANYTHING_NOT_SUCCESS')
         self.assertEqual(response.status_code, 302)
-
 
     def test_auth_success_views(self):
         """

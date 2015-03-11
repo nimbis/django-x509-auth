@@ -8,18 +8,18 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'UserCertMapping'
-        db.create_table(u'x509_auth_usercertmapping', (
+        # Adding model 'X509UserMapping'
+        db.create_table(u'x509_auth_x509usermapping', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(default=None, related_name=u'x509_auth_usercertmapping_related', null=True, blank=True, to=orm['auth.User'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(default=None, related_name=u'x509_auth_x509usermapping_related', null=True, blank=True, to=orm['auth.User'])),
             ('cert_dn', self.gf('django.db.models.fields.CharField')(unique=True, max_length=1024)),
         ))
-        db.send_create_signal(u'x509_auth', ['UserCertMapping'])
+        db.send_create_signal(u'x509_auth', ['X509UserMapping'])
 
 
     def backwards(self, orm):
-        # Deleting model 'UserCertMapping'
-        db.delete_table(u'x509_auth_usercertmapping')
+        # Deleting model 'X509UserMapping'
+        db.delete_table(u'x509_auth_x509usermapping')
 
 
     models = {
@@ -59,11 +59,11 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'x509_auth.usercertmapping': {
-            'Meta': {'object_name': 'UserCertMapping'},
+        u'x509_auth.x509usermapping': {
+            'Meta': {'object_name': 'X509UserMapping'},
             'cert_dn': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '1024'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'related_name': "u'x509_auth_usercertmapping_related'", 'null': 'True', 'blank': 'True', 'to': u"orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'related_name': "u'x509_auth_x509usermapping_related'", 'null': 'True', 'blank': 'True', 'to': u"orm['auth.User']"})
         }
     }
 
