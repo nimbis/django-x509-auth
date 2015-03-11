@@ -23,3 +23,11 @@ class AuthenticationBackend(ModelBackend):
             return X509UserMapping.objects.get(cert_dn=credentials['dn']).user
         except X509UserMapping.DoesNotExist:
             return None
+
+def is_X509_authed(user):
+    """
+    Check how this user authenticated (did they use our backend?)
+    """
+
+    return hasattr(user, 'backend') and
+        user.backend=='x509_auth.auth_backend.AuthenticationBackend'

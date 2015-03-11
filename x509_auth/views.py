@@ -12,6 +12,7 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 
 from .models import X509UserMapping
+from .auth_backend import is_X509_authed
 
 logger = logging.getLogger(__name__)
 
