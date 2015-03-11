@@ -94,9 +94,9 @@ class X509UserMappingTest(TestCase):
         """
 
         response = self.c.get(reverse('auth'),
-                             {'next': reverse('list')},
-                             HTTP_X_SSL_USER_DN=self.dn,
-                             HTTP_X_SSL_AUTHENTICATED='SUCCESS')
+                              {'next': reverse('list')},
+                              HTTP_X_SSL_USER_DN=self.dn,
+                              HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url.endswith(reverse('list')), True)
 
@@ -108,15 +108,14 @@ class X509UserMappingTest(TestCase):
         self.assertNotIn('You are using this new certificate:',
                          response.content)
 
-
     def test_auth_success_views_no_next(self):
         """
         Test actually working, but with out next parameter
         """
 
         response = self.c.get(reverse('auth'),
-                             HTTP_X_SSL_USER_DN=self.dn,
-                             HTTP_X_SSL_AUTHENTICATED='SUCCESS')
+                              HTTP_X_SSL_USER_DN=self.dn,
+                              HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url.endswith(reverse('list')), False)
 
@@ -157,7 +156,7 @@ class X509UserMappingTest(TestCase):
         """
 
         self.test_auth_success_views()
-        response = self.c.get(reverse('delete', kwargs={'pk':1}),
+        response = self.c.get(reverse('delete', kwargs={'pk': 1}),
                               HTTP_X_SSL_USER_DN=self.dn,
                               HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 200)
@@ -171,7 +170,7 @@ class X509UserMappingTest(TestCase):
         """
 
         self.test_auth_success_views()
-        response = self.c.get(reverse('delete', kwargs={'pk':2}),
+        response = self.c.get(reverse('delete', kwargs={'pk': 2}),
                               HTTP_X_SSL_USER_DN=self.dn,
                               HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 404)
@@ -185,7 +184,7 @@ class X509UserMappingTest(TestCase):
         """
 
         self.test_auth_success_views()
-        response = self.c.post(reverse('map'), {'NOTcert_dn':'OtherCern'})
+        response = self.c.post(reverse('map'), {'NOTcert_dn': 'OtherCern'})
         self.assertEqual(response.status_code, 200)
         self.assertIn('This field is required.', response.content)
 
@@ -207,5 +206,5 @@ class X509UserMappingTest(TestCase):
         """
 
         self.test_auth_success_views()
-        response = self.c.post(reverse('map'), {'cert_dn':'OtherCern'})
+        response = self.c.post(reverse('map'), {'cert_dn': 'OtherCern'})
         self.assertEqual(response.status_code, 302)
