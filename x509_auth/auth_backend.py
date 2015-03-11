@@ -10,7 +10,7 @@ class AuthenticationBackend(ModelBackend):
 
     def authenticate(self, **credentials):
         """
-        Try to look up User in UserCertMaps, returning None if not found
+        Try to look up User in X509UserMaps, returning None if not found
         """
 
         if 'dn' not in credentials or 'verified' not in credentials:
