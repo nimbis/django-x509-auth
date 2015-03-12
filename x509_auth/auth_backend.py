@@ -29,5 +29,5 @@ def is_X509_authed(user):
     Check how this user authenticated (did they use our backend?)
     """
 
-    return hasattr(user, 'backend') and
-        user.backend=='x509_auth.auth_backend.AuthenticationBackend'
+    return (hasattr(user, 'backend') and
+        user.backend=='x509_auth.auth_backend.AuthenticationBackend')

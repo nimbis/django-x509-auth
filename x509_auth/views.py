@@ -45,6 +45,7 @@ class X509AuthView(TemplateView):
 
         # requires our backend
         user = authenticate(dn=dn, verified=verified)
+        print "RESULT: is_X509_authed {0}".format(is_X509_authed(user))
         if user is not None:
             login(request, user)
             try:
