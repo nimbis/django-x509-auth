@@ -39,13 +39,14 @@ def is_X509_authed(request):
         return False
     try:
         if not (request.session['_auth_user_backend'] ==
-            'x509_auth.auth_backend.AuthenticationBackend'):
+                'x509_auth.auth_backend.AuthenticationBackend'):
             return False
     except KeyError:
         # Odd.. we're authed with out a backend.
         return False
 
     return True
+
 
 def X509_required(view_func):
     """
@@ -56,6 +57,6 @@ def X509_required(view_func):
     @wraps(view_func, assigned=available_attrs(view_func))
     def _wrapped_view(request, *args, **kwargs):
         if not is_X509_authed(request):
-            redirect_to_login(request.get_full_path(),reverse('auth'))
+            redirect_to_login(request.get_full_path(), reverse('auth'))
         return view_func(request, *args, **kwargs)
     return _wrapped_view
