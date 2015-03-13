@@ -38,3 +38,11 @@ def is_X509_authed(user):
 def X509_required(view_func):
     return user_passes_test(is_X509_authed,
                             login_url=reverse_lazy('auth'))(view_func)
+
+def X509_required2(view_func):
+
+    def decorator(view_func):
+        @wraps(view_func, assigned=available_attrs(view_func))
+        def _wrapped_view(request, *args, **kwargs):
+            return view_func(request, *args, **kwargs)
+    return decorator
