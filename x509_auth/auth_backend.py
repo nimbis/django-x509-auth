@@ -46,5 +46,8 @@ def X509_required2(view_func):
 
     @wraps(view_func, assigned=available_attrs(view_func))
     def _wrapped_view(request, *args, **kwargs):
+        for x in request.session.keys():
+            print "{0} {1}".format(x, request.session[x])
+        print "is logged in {0}".format(request.user.is_authenticated())
         return view_func(request, *args, **kwargs)
     return _wrapped_view
