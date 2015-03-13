@@ -12,7 +12,6 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 
 from .models import X509UserMapping
-from .auth_backend import is_X509_authed
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +44,6 @@ class X509AuthView(TemplateView):
 
         # requires our backend
         user = authenticate(dn=dn, verified=verified)
-        print "RESULT: is_X509_authed {0}".format(is_X509_authed(user))
         if user is not None:
             login(request, user)
             try:
