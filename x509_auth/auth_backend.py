@@ -35,4 +35,6 @@ def is_X509_authed(user):
     return (hasattr(user, 'backend') and
             user.backend == 'x509_auth.auth_backend.AuthenticationBackend')
 
-X509_required = user_passes_test(is_X509_authed, login_url=reverse_lazy('auth'))
+def X509_required(view_func):
+    return user_passes_test(is_X509_authed,
+                            login_url=reverse_lazy('auth'))(view_func)
