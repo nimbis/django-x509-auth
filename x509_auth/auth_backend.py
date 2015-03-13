@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth.decorators import user_passes_test
 
 from .models import X509UserMapping
 
@@ -32,3 +33,5 @@ def is_X509_authed(user):
 
     return (hasattr(user, 'backend') and
             user.backend == 'x509_auth.auth_backend.AuthenticationBackend')
+
+X509_required = user_passes_test(is_X509_authed)
