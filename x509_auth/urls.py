@@ -5,7 +5,7 @@ from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 from .views import X509AuthView, X509CreateView, X509ListView, X509DeleteView
-from .auth_backend import X509_required X509_required
+from .auth_backend import X509_required, X509_required2
 
 urlpatterns = patterns(
     '',

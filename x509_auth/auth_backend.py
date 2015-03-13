@@ -1,8 +1,11 @@
 # -- code: utf-8 --
 from __future__ import absolute_import
 
+from functools import wraps
+
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.decorators import user_passes_test
+from django.utils.decorators import available_attrs
 from django.core.urlresolvers import reverse_lazy
 
 from .models import X509UserMapping
@@ -41,8 +44,6 @@ def X509_required(view_func):
 
 def X509_required2(view_func):
 
-    def decorator(view_func):
-        @wraps(view_func, assigned=available_attrs(view_func))
-        def _wrapped_view(request, *args, **kwargs):
-            return view_func(request, *args, **kwargs)
-    return decorator
+    @wraps(view_func, assigned=available_attrs(view_func))
+    def _wrapped_view(request, *args, **kwargs):
+        return view_func(request, *args, **kwargs)
