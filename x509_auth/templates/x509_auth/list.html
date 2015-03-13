@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load x509_auth_extras %}
 {% block body %}
 <h1>Certs</h1>
 {% if HTTP_X_SSL_AUTHENTICATED %}
@@ -13,6 +14,8 @@ You are using this new certificate:
 </form>
 {% endif %}
 <ul>
+{% is_X509_authed as authed %}
+TEST: {{ authed }}
 {% for usercert in object_list %}
   <li>{{ usercert.user }} - {{ usercert.cert_dn }} <a href="{% url 'delete' pk=usercert.pk %}">Delete</a></li>
 {% empty %}
