@@ -47,3 +47,4 @@ def X509_required2(view_func):
     @wraps(view_func, assigned=available_attrs(view_func))
     def _wrapped_view(request, *args, **kwargs):
         return view_func(request, *args, **kwargs)
+    return _wrapped_view
