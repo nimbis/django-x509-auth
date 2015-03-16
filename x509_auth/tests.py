@@ -3,18 +3,20 @@ from __future__ import absolute_import
 
 from django.test import TestCase
 from django.test.client import Client
-from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate
-from django.conf import settings
+from django.test.client import RequestFactory
+from django.test.utils import override_settings
+from django.contrib.auth.models import User, AnonymousUser
+from django.contrib.auth import authenticate
 from django.core.urlresolvers import reverse
 
 from .models import X509UserMapping
+from .auth_backend import is_X509_authed
 
 
 class X509UserMappingTest(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create(username="test")
+        self.user = User.objects.create(username="test", password="test")
         self.notuser = User.objects.create(username="nottest")
         self.dn = "AwesomeDN"
         self.mapping = X509UserMapping.objects.create(
@@ -208,3 +210,90 @@ class X509UserMappingTest(TestCase):
         self.test_auth_success_views()
         response = self.c.post(reverse('map'), {'cert_dn': 'OtherCern'})
         self.assertEqual(response.status_code, 302)
+
+    def test_is_auth_backend(self):
+        """
+        Test our decorator function and auth test utility function.
+        """
+        factory = RequestFactory()
+        request = factory.get('/x509/list')
+        request.user = self.user
+        self.assertEqual(request.user.is_authenticated(), True)
+
+        # Jam a session in here.  Dictionaries are close enough to sessions.
+        # Only your hair dresser knows for sure.
+        request.session = {}
+        request.session['_auth_user_backend'] = (
+            'x509_auth.auth_backend.AuthenticationBackend')
+
+        self.assertEqual(is_X509_authed(request), True)
+
+    def test_is_auth_backend_wrong_backend(self):
+        """
+        Test our decorator function and auth test utility function, when
+        someone is NOT using our backend.
+        """
+        factory = RequestFactory()
+        request = factory.get('/x509/list')
+        request.user = self.user
+        self.assertEqual(request.user.is_authenticated(), True)
+
+        # Jam a session in here.  Dictionaries are close enough to sessions.
+        # Only your hair dresser knows for sure.
+        request.session = {}
+        request.session['_auth_user_backend'] = 'some.other.Backend'
+
+        self.assertEqual(is_X509_authed(request), False)
+
+    def test_is_auth_backend_unauthed(self):
+        """
+        Test our decorator function and auth test utility function when someone
+        is not logged in.
+        """
+        factory = RequestFactory()
+        request = factory.get('/x509/list')
+        request.user = AnonymousUser()
+
+        self.assertEqual(request.user.is_authenticated(), False)
+
+        self.assertEqual(is_X509_authed(request), False)
+
+    def test_is_auth_backend_key_error(self):
+        """
+        Test our decorator function and auth test utility function.  Don't
+        include the required session key.  This should never happen.
+        """
+        factory = RequestFactory()
+        request = factory.get('/x509/list')
+        request.user = self.user
+        self.assertEqual(request.user.is_authenticated(), True)
+
+        # Jam a session in here.  Dictionaries are close enough to sessions.
+        # Only your hair dresser knows for sure.
+        request.session = {}
+        self.assertEqual(is_X509_authed(request), False)
+
+    def test_auth_success_template_tag(self):
+        """
+        Test template tag.
+        """
+
+        self.test_auth_success_views()
+        response = self.c.get(reverse('map'))
+        self.assertIn("TEST: True", response.content)
+
+    # sans django.core.context_processors.request
+    @override_settings(TEMPLATE_CONTEXT_PROCESSORS=(
+        'django.contrib.auth.context_processors.auth',
+        'django.core.context_processors.i18n',
+        'django.core.context_processors.media',
+        'django.core.context_processors.static',
+    ))
+    def test_auth_fail_template_tag(self):
+        """
+        Test template tag, but with out the needed context processor
+        """
+
+        self.test_auth_success_views()
+        response = self.c.get(reverse('map'))
+        self.assertIn("TEST: False", response.content)

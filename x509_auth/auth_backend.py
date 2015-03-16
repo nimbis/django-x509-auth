@@ -4,7 +4,6 @@ from __future__ import absolute_import
 from functools import wraps
 
 from django.contrib.auth.backends import ModelBackend
-from django.contrib.auth.decorators import user_passes_test
 from django.utils.decorators import available_attrs
 from django.core.urlresolvers import reverse
 from django.contrib.auth.views import redirect_to_login

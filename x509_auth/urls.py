@@ -2,7 +2,7 @@
 from __future__ import absolute_import
 
 from django.conf.urls import patterns, url
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 
 from .views import X509AuthView, X509CreateView, X509ListView, X509DeleteView
 from .auth_backend import X509_required
@@ -13,7 +13,7 @@ urlpatterns = patterns(
     url(r'^map/$',
         login_required(X509CreateView.as_view()),
         name='map'),
-    url(r'^map2/$',
+    url(r'^map-test/$',
         X509_required(X509CreateView.as_view()),
         name='map2'),
     url(r'^list/$',
