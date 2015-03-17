@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 class X509AuthView(TemplateView):
     """
     View to look for HTTP headers and if found, map and authenticate a user
-    (if possible)
+    (if possible).
     """
 
     template_name = "x509_auth/auth.html"
@@ -78,7 +78,7 @@ class X509ListView(ListView):
 
     def get_queryset(self):
         """
-        Limit query set to logged in user
+        Limit query set to logged in user.
         """
         return self.model.objects.filter(user=self.request.user)
 
@@ -96,7 +96,7 @@ class X509CreateView(CreateView):
 
     def form_valid(self, form):
         """
-        Force user to logged in user
+        Force user attribute to be the currently logged in user.
         """
         form.instance.user = self.request.user
         return super(X509CreateView, self).form_valid(form)

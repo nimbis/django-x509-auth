@@ -39,7 +39,7 @@ class X509UserMappingTest(TestCase):
     def test_programmatic_bad_auth(self):
         """
         Test programmatic authentication.  Exercises the authentication
-        backend directly.  Should be None
+        backend directly.  Should be None.
         """
 
         user = authenticate(dn=self.dn)
@@ -58,7 +58,7 @@ class X509UserMappingTest(TestCase):
 
     def test_auth_baddn_views(self):
         """
-        Test sending an unmapped X.509 Subject (DN)
+        Test sending an unmapped X.509 Subject (DN).
         """
 
         self.c.get(reverse('auth'),
@@ -75,7 +75,7 @@ class X509UserMappingTest(TestCase):
 
     def test_auth_invalid_ssl_views(self):
         """
-        Test sending an invalid cert (even if the Subject is good)
+        Test sending an invalid cert (even if the Subject is good).
         """
 
         self.c.get(reverse('auth'),
@@ -112,7 +112,7 @@ class X509UserMappingTest(TestCase):
 
     def test_auth_success_views_no_next(self):
         """
-        Test actually working, but with out next parameter
+        Test actually working, but with out next parameter.
         """
 
         response = self.c.get(reverse('auth'),
@@ -140,7 +140,7 @@ class X509UserMappingTest(TestCase):
 
     def test_list_view_new_cert(self):
         """
-        Test actually working, but then send new cert (prompts to add)
+        Test actually working, but then send new cert (prompts to add).
         """
 
         self.test_auth_success_views()
@@ -192,7 +192,7 @@ class X509UserMappingTest(TestCase):
 
     def test_create_form_non_unique(self):
         """
-        Test posting to the create form, but with non-unique DN
+        Test posting to the create form, but with non-unique DN.
         """
 
         self.test_auth_success_views()
@@ -291,7 +291,7 @@ class X509UserMappingTest(TestCase):
     ))
     def test_auth_fail_template_tag(self):
         """
-        Test template tag, but with out the needed context processor
+        Test template tag, but with out the needed context processor.
         """
 
         self.test_auth_success_views()
