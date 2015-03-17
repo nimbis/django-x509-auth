@@ -23,6 +23,15 @@ Installation
 
 * In order to use the template tag, you must have `'django.core.context_processors.request'` in `settings.TEMPLATE_CONTEXT_PROCESSORS`
 
+* If you're using Django < 1.7 in conjunction with South, make sure that your SOUTH_MIGRATION_MODULES setting contains `'x509_auth': 'x509_auth.south_migrations'`, like so:
+
+```
+SOUTH_MIGRATION_MODULES = {
+    # your other south migration modules...
+    'x509_auth': 'x509_auth.south_migrations',
+}
+```
+
 * Your web server must set two HTTP headers, `HTTP_X_SSL_AUTHENTICATED` and `HTTP_X_SSL_USER_DN`.  See http://nategood.com/client-side-certificate-authentication-in-ngi for configuring Nginx to do client side authentication.  Note: the link uses CGI parameters instead of HTTP headers.
 
 Hint (for nginx):
