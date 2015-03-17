@@ -14,12 +14,10 @@ You are using this new certificate:
 </form>
 {% endif %}
 <ul>
-{% is_X509_authed as authed %}
-TEST: {{ authed }}
-{% for usercert in object_list %}
-  <li>{{ usercert.user }} - {{ usercert.cert_dn }} <a href="{% url 'delete' pk=usercert.pk %}">Delete</a></li>
+{% for mapping in object_list %}
+  <li>{{ mapping.user }} - {{ mapping.cert_dn }} <a href="{% url 'delete' pk=mapping.pk %}">Delete</a></li>
 {% empty %}
-  <li>No usercerts yet.</li>
+  <li>No X.509 mappings yet.</li>
 {% endfor %}
 </ul>
 {% endblock %}
