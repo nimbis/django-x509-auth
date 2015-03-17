@@ -23,7 +23,9 @@ Installation
 
 * In order to use the template tag, you must have `'django.core.context_processors.request'` in `settings.TEMPLATE_CONTEXT_PROCESSORS`
 
-* Your web server must set two HTTP headers, `HTTP_X_SSL_AUTHENTICATED` and `HTTP_X_SSL_USER_DN`.  See http://nategood.com/client-side-certificate-authentication-in-ngi for configuring Nginx to do client side authentication.  Note: the link uses CGI parameters instead of HTTP headers.  Hint:
+* Your web server must set two HTTP headers, `HTTP_X_SSL_AUTHENTICATED` and `HTTP_X_SSL_USER_DN`.  See http://nategood.com/client-side-certificate-authentication-in-ngi for configuring Nginx to do client side authentication.  Note: the link uses CGI parameters instead of HTTP headers.
+
+Hint (for nginx):
 
     proxy_set_header X-SSL-User-DN   $ssl_client_s_dn;
     proxy_set_header X-SSL-Authenticated $ssl_client_verify
