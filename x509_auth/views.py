@@ -46,10 +46,7 @@ class X509AuthView(TemplateView):
         user = authenticate(dn=dn, verified=verified)
         if user is not None:
             login(request, user)
-            try:
-                return HttpResponseRedirect(request.GET['next'])
-            except KeyError:
-                return HttpResponseRedirect('/')
+            return HttpResponseRedirect(request.GET.get('next', '/'))
         else:
             for k in ['HTTP_X_SSL_USER_DN', 'HTTP_X_SSL_AUTHENTICATED']:
                 context[k] = request.META[k]
