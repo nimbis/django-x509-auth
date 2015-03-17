@@ -19,9 +19,13 @@ Installation
 
 * Run `syncdb` or `migrate x509_auth` if you have South installed.
 
-* In order to authenticate people directly with certificate mappings, you must have `''x509_auth.auth_backend.AuthenticationBackend'` in `settings.AUTHENTICATION_BACKENDS`
+* In order to authenticate people directly with certificate mappings, you must have `'x509_auth.auth_backend.AuthenticationBackend'` in `settings.AUTHENTICATION_BACKENDS`
 
 * In order to use the template tag, you must have `'django.core.context_processors.request'` in `settings.TEMPLATE_CONTEXT_PROCESSORS`
+
+* Your web server must set two HTTP headers, `HTTP_X_SSL_AUTHENTICATED` and `HTTP_X_SSL_USER_DN`.  See http://nategood.com/client-side-certificate-authentication-in-ngi for configuring Nginx to do client side authentication.  Note: the link uses CGI parameters instead of HTTP headers.  Hint:
+    proxy_set_header X-SSL-User-DN   $ssl_client_s_dn;
+    proxy_set_header X-SSL-Authenticated $ssl_client_verify
 
 Overview
 --------
