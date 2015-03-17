@@ -109,10 +109,6 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'tests.urls'
 
-# project slug has dashes
-PROJECT_SLUG = os.environ.get('PROJECT_SLUG', 'shop-core')
-PROJECT_NAME = os.environ.get('PROJECT_LABEL', 'shop_core')
-
 BASE_PATH = os.environ.get('BASE_PATH', os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..')))
 
