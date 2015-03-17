@@ -33,7 +33,7 @@ class AuthenticationBackend(ModelBackend):
             return None
 
 
-def is_X509_authed(request):
+def is_X509_authenticated(request):
     """
     Check how this user authenticated (did they use our backend?)
     """
@@ -43,8 +43,9 @@ def is_X509_authed(request):
             'x509_auth.auth_backend.AuthenticationBackend')
     except KeyError:
         # Odd.. we're authed with out a backend.
-        logger.error("is_X509_authed got a user that was logged in but some "
-                     "how did not have '_auth_user_backend' in their session")
+        logger.error("is_X509_authenticated got a user that was logged in but"
+                     " some how did not have '_auth_user_backend' in their"
+                     " session.  Is Django broke?")
         return False
 
 
@@ -56,7 +57,7 @@ def X509_required(view_func):
 
     @wraps(view_func, assigned=available_attrs(view_func))
     def _wrapped_view(request, *args, **kwargs):
-        if not is_X509_authed(request):
+        if not is_X509_authenticated(request):
             return redirect_to_login(request.get_full_path(), reverse('auth'))
         return view_func(request, *args, **kwargs)
     return _wrapped_view

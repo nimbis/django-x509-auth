@@ -5,7 +5,7 @@ import logging
 
 from django import template
 
-from x509_auth.auth_backend import is_X509_authed as authed_backend
+from x509_auth.auth_backend import is_X509_authenticated as authed_backend
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +13,7 @@ register = template.Library()
 
 
 @register.assignment_tag(takes_context=True)
-def is_X509_authed(context):
+def is_X509_authenticated(context):
     try:
         return authed_backend(context['request'])
     except:

@@ -47,10 +47,10 @@ django User model to an X.509 subject.  We rely on the web server to handle
 validation of client side certificates.  For this reason you must make sure you
 protect your local Django instance from direct access.
 
-A template tag of `is_X509_authed` is available.  This will returns True if you
+A template tag of `is_X509_authenticated` is available.  This will returns True if you
 have authenticated against the provided backend, and False otherwise.
 
-    {% is_X509_authed as authed %}
+    {% is_X509_authenticated as authed %}
     TEST: {{ authed }}
 
 A decorator of `X509_required` is available.  It behaves much like

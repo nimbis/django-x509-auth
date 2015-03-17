@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate
 from django.core.urlresolvers import reverse
 
 from .models import X509UserMapping
-from .auth_backend import is_X509_authed
+from .auth_backend import is_X509_authenticated
 
 
 class X509UserMappingTest(TestCase):
@@ -226,7 +226,7 @@ class X509UserMappingTest(TestCase):
         request.session['_auth_user_backend'] = (
             'x509_auth.auth_backend.AuthenticationBackend')
 
-        self.assertEqual(is_X509_authed(request), True)
+        self.assertEqual(is_X509_authenticated(request), True)
 
     def test_is_auth_backend_wrong_backend(self):
         """
@@ -243,7 +243,7 @@ class X509UserMappingTest(TestCase):
         request.session = {}
         request.session['_auth_user_backend'] = 'some.other.Backend'
 
-        self.assertEqual(is_X509_authed(request), False)
+        self.assertEqual(is_X509_authenticated(request), False)
 
     def test_is_auth_backend_unauthed(self):
         """
@@ -256,7 +256,7 @@ class X509UserMappingTest(TestCase):
 
         self.assertEqual(request.user.is_authenticated(), False)
 
-        self.assertEqual(is_X509_authed(request), False)
+        self.assertEqual(is_X509_authenticated(request), False)
 
     def test_is_auth_backend_key_error(self):
         """
@@ -271,7 +271,7 @@ class X509UserMappingTest(TestCase):
         # Jam a session in here.  Dictionaries are close enough to sessions.
         # Only your hair dresser knows for sure.
         request.session = {}
-        self.assertEqual(is_X509_authed(request), False)
+        self.assertEqual(is_X509_authenticated(request), False)
 
     def test_auth_success_template_tag(self):
         """
