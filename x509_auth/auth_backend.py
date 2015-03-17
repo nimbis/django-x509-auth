@@ -1,6 +1,7 @@
 # -- code: utf-8 --
 from __future__ import absolute_import
 
+import logging
 from functools import wraps
 
 from django.contrib.auth.backends import ModelBackend
@@ -9,6 +10,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.views import redirect_to_login
 
 from .models import X509UserMapping
+
+logger = logging.getLogger(__name__)
 
 
 class AuthenticationBackend(ModelBackend):
@@ -42,6 +45,8 @@ def is_X509_authed(request):
             return False
     except KeyError:
         # Odd.. we're authed with out a backend.
+        logger.error("is_X509_authed got a user that was logged in but some "
+                     "how did not have '_auth_user_backend' in their session")
         return False
 
     return True
