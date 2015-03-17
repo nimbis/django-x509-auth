@@ -107,7 +107,7 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'x509_auth.urls'
+ROOT_URLCONF = 'tests.urls'
 
 # project slug has dashes
 PROJECT_SLUG = os.environ.get('PROJECT_SLUG', 'shop-core')
