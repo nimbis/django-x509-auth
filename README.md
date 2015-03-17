@@ -28,7 +28,7 @@ Installation
 Hint (for nginx):
 
     proxy_set_header X-SSL-User-DN   $ssl_client_s_dn;
-    proxy_set_header X-SSL-Authenticated $ssl_client_verify
+    proxy_set_header X-SSL-Authenticated $ssl_client_verify;
 
 Overview
 --------
