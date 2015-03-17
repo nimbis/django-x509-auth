@@ -37,19 +37,15 @@ def is_X509_authed(request):
     """
     Check how this user authenticated (did they use our backend?)
     """
-    if not request.user.is_authenticated():
-        return False
     try:
-        if (request.session['_auth_user_backend'] !=
-                'x509_auth.auth_backend.AuthenticationBackend'):
-            return False
+        return request.user.is_authenticated() and (
+            request.session['_auth_user_backend'] ==
+            'x509_auth.auth_backend.AuthenticationBackend')
     except KeyError:
         # Odd.. we're authed with out a backend.
         logger.error("is_X509_authed got a user that was logged in but some "
                      "how did not have '_auth_user_backend' in their session")
         return False
-
-    return True
 
 
 def X509_required(view_func):
