@@ -21,7 +21,7 @@ class AuthenticationBackend(ModelBackend):
         if 'dn' not in credentials or 'verified' not in credentials:
             return None
 
-        if not credentials['verified'] == 'SUCCESS':
+        if credentials['verified'] != 'SUCCESS':
             return None
 
         try:
@@ -37,7 +37,7 @@ def is_X509_authed(request):
     if not request.user.is_authenticated():
         return False
     try:
-        if not (request.session['_auth_user_backend'] ==
+        if (request.session['_auth_user_backend'] !=
                 'x509_auth.auth_backend.AuthenticationBackend'):
             return False
     except KeyError:
