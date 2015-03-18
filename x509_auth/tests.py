@@ -100,7 +100,8 @@ class X509UserMappingTest(TestCase):
                               HTTP_X_SSL_USER_DN=self.dn,
                               HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url.endswith(reverse('x509_auth_list')), True)
+        self.assertEqual(response.url.endswith(reverse('x509_auth_list')),
+                         True)
 
         # If logged in, will be 200
         response = self.c.get(reverse('x509_auth_list'),
@@ -119,7 +120,8 @@ class X509UserMappingTest(TestCase):
                               HTTP_X_SSL_USER_DN=self.dn,
                               HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url.endswith(reverse('x509_auth_list')), False)
+        self.assertEqual(response.url.endswith(reverse('x509_auth_list')),
+                         False)
 
         # If logged in, will be 200
         response = self.c.get(reverse('x509_auth_list'),
@@ -186,7 +188,8 @@ class X509UserMappingTest(TestCase):
         """
 
         self.test_auth_success_views()
-        response = self.c.post(reverse('x509_auth_map'), {'NOTcert_dn': 'OtherCern'})
+        response = self.c.post(reverse('x509_auth_map'),
+                               {'NOTcert_dn': 'OtherCern'})
         self.assertEqual(response.status_code, 200)
         self.assertIn('This field is required.', response.content)
 
@@ -196,8 +199,8 @@ class X509UserMappingTest(TestCase):
         """
 
         self.test_auth_success_views()
-        response = self.c.post(reverse('x509_auth_map'), {'cert_dn':
-                                                self.mapping.cert_dn})
+        response = self.c.post(reverse('x509_auth_map'),
+                               {'cert_dn': self.mapping.cert_dn})
         self.assertEqual(response.status_code, 200)
         self.assertIn('X509 user mapping with this Cert dn already exists.',
                       response.content)
@@ -208,7 +211,8 @@ class X509UserMappingTest(TestCase):
         """
 
         self.test_auth_success_views()
-        response = self.c.post(reverse('x509_auth_map'), {'cert_dn': 'OtherCern'})
+        response = self.c.post(reverse('x509_auth_map'),
+                               {'cert_dn': 'OtherCern'})
         self.assertEqual(response.status_code, 302)
 
     def test_is_auth_backend(self):
