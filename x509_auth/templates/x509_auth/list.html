@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load x509_auth_extras %}
+{% block body %}
+<h1>Certs</h1>
+{% if HTTP_X_SSL_AUTHENTICATED %}
+You are using this new certificate:
+<form action="{% url 'x509_auth_map' %}" method="post">
+  {% csrf_token %}
+  <p>
+    Cert Distinguished Name (DN): <em>{{ HTTP_X_SSL_USER_DN }}</em>
+  </p>
+  <input id="id_cert_dn" maxlength="1024" name="cert_dn" type="hidden" value="{{ HTTP_X_SSL_USER_DN }}" />
+  <input type="submit" value="Add Certificate" />
+</form>
+{% endif %}
+<ul>
+{% for mapping in object_list %}
+  <li>{{ mapping.user }} - {{ mapping.cert_dn }} <a href="{% url 'x509_auth_delete' pk=mapping.pk %}">Delete</a></li>
+{% empty %}
+  <li>No X.509 mappings yet.</li>
+{% endfor %}
+</ul>
+{% endblock %}

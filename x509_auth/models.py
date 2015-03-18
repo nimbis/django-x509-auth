@@ -5,8 +5,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class UserCertMapping(models.Model):
-    ''' 1:M mapping of Users to certificate (X.509) DNs (subjects) '''
+class X509UserMapping(models.Model):
+    """ 1:M mapping of Users to certificate (X.509) DNs (subjects) """
 
     user = models.ForeignKey(
         User,
@@ -20,3 +20,6 @@ class UserCertMapping(models.Model):
         max_length=1024,
         blank=False,
         unique=True)
+
+    def __str__(self):
+        return "{0}:{1}".format(self.user.username, self.cert_dn)
