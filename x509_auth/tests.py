@@ -51,7 +51,7 @@ class X509UserMappingTest(TestCase):
         """
 
         # @login_required, so 302 (not logged in)
-        response = self.c.get(reverse('list'),
+        response = self.c.get(reverse('x509_auth_list'),
                               HTTP_X_SSL_USER_DN=self.dn,
                               HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 302)
@@ -61,14 +61,14 @@ class X509UserMappingTest(TestCase):
         Test sending an unmapped X.509 Subject (DN).
         """
 
-        self.c.get(reverse('auth'),
-                   {'next': reverse('list')},
+        self.c.get(reverse('x509_auth_auth'),
+                   {'next': reverse('x509_auth_list')},
                    HTTP_X_SSL_USER_DN=self.dn+'X',
                    HTTP_X_SSL_AUTHENTICATED='SUCCESS',
                    follow=True)
 
         # @login_required, so 302 (not logged in)
-        response = self.c.get(reverse('list'),
+        response = self.c.get(reverse('x509_auth_list'),
                               HTTP_X_SSL_USER_DN=self.dn+'X',
                               HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 302)
@@ -78,14 +78,14 @@ class X509UserMappingTest(TestCase):
         Test sending an invalid cert (even if the Subject is good).
         """
 
-        self.c.get(reverse('auth'),
-                   {'next': reverse('list')},
+        self.c.get(reverse('x509_auth_auth'),
+                   {'next': reverse('x509_auth_list')},
                    HTTP_X_SSL_USER_DN=self.dn,
                    HTTP_X_SSL_AUTHENTICATED='ANYTHING_NOT_SUCCESS',
                    follow=True)
 
         # @login_required, so 302 (not logged in)
-        response = self.c.get(reverse('list'),
+        response = self.c.get(reverse('x509_auth_list'),
                               HTTP_X_SSL_USER_DN=self.dn,
                               HTTP_X_SSL_AUTHENTICATED='ANYTHING_NOT_SUCCESS')
         self.assertEqual(response.status_code, 302)
@@ -95,15 +95,15 @@ class X509UserMappingTest(TestCase):
         Test actually working.
         """
 
-        response = self.c.get(reverse('auth'),
-                              {'next': reverse('list')},
+        response = self.c.get(reverse('x509_auth_auth'),
+                              {'next': reverse('x509_auth_list')},
                               HTTP_X_SSL_USER_DN=self.dn,
                               HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url.endswith(reverse('list')), True)
+        self.assertEqual(response.url.endswith(reverse('x509_auth_list')), True)
 
         # If logged in, will be 200
-        response = self.c.get(reverse('list'),
+        response = self.c.get(reverse('x509_auth_list'),
                               HTTP_X_SSL_USER_DN=self.dn,
                               HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 200)
@@ -115,14 +115,14 @@ class X509UserMappingTest(TestCase):
         Test actually working, but with out next parameter.
         """
 
-        response = self.c.get(reverse('auth'),
+        response = self.c.get(reverse('x509_auth_auth'),
                               HTTP_X_SSL_USER_DN=self.dn,
                               HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url.endswith(reverse('list')), False)
+        self.assertEqual(response.url.endswith(reverse('x509_auth_list')), False)
 
         # If logged in, will be 200
-        response = self.c.get(reverse('list'),
+        response = self.c.get(reverse('x509_auth_list'),
                               HTTP_X_SSL_USER_DN=self.dn,
                               HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 200)
@@ -133,8 +133,8 @@ class X509UserMappingTest(TestCase):
         """
 
         # Unsuccessful login will NOT redirect, ergo, 200
-        response = self.c.get(reverse('auth'),
-                              {'next': reverse('list')},
+        response = self.c.get(reverse('x509_auth_auth'),
+                              {'next': reverse('x509_auth_list')},
                               HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 200)
 
@@ -146,7 +146,7 @@ class X509UserMappingTest(TestCase):
         self.test_auth_success_views()
 
         # If logged in, will be 200
-        response = self.c.get(reverse('list'),
+        response = self.c.get(reverse('x509_auth_list'),
                               HTTP_X_SSL_USER_DN=self.dn+'X',
                               HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 200)
@@ -158,7 +158,7 @@ class X509UserMappingTest(TestCase):
         """
 
         self.test_auth_success_views()
-        response = self.c.get(reverse('delete', kwargs={'pk': 1}),
+        response = self.c.get(reverse('x509_auth_delete', kwargs={'pk': 1}),
                               HTTP_X_SSL_USER_DN=self.dn,
                               HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 200)
@@ -172,7 +172,7 @@ class X509UserMappingTest(TestCase):
         """
 
         self.test_auth_success_views()
-        response = self.c.get(reverse('delete', kwargs={'pk': 2}),
+        response = self.c.get(reverse('x509_auth_delete', kwargs={'pk': 2}),
                               HTTP_X_SSL_USER_DN=self.dn,
                               HTTP_X_SSL_AUTHENTICATED='SUCCESS')
         self.assertEqual(response.status_code, 404)
@@ -186,7 +186,7 @@ class X509UserMappingTest(TestCase):
         """
 
         self.test_auth_success_views()
-        response = self.c.post(reverse('map'), {'NOTcert_dn': 'OtherCern'})
+        response = self.c.post(reverse('x509_auth_map'), {'NOTcert_dn': 'OtherCern'})
         self.assertEqual(response.status_code, 200)
         self.assertIn('This field is required.', response.content)
 
@@ -196,7 +196,7 @@ class X509UserMappingTest(TestCase):
         """
 
         self.test_auth_success_views()
-        response = self.c.post(reverse('map'), {'cert_dn':
+        response = self.c.post(reverse('x509_auth_map'), {'cert_dn':
                                                 self.mapping.cert_dn})
         self.assertEqual(response.status_code, 200)
         self.assertIn('X509 user mapping with this Cert dn already exists.',
@@ -208,7 +208,7 @@ class X509UserMappingTest(TestCase):
         """
 
         self.test_auth_success_views()
-        response = self.c.post(reverse('map'), {'cert_dn': 'OtherCern'})
+        response = self.c.post(reverse('x509_auth_map'), {'cert_dn': 'OtherCern'})
         self.assertEqual(response.status_code, 302)
 
     def test_is_auth_backend(self):
@@ -279,7 +279,7 @@ class X509UserMappingTest(TestCase):
         """
 
         self.test_auth_success_views()
-        response = self.c.get(reverse('map'))
+        response = self.c.get(reverse('x509_auth_map'))
         self.assertIn("TEST: True", response.content)
 
     # sans django.core.context_processors.request
@@ -295,5 +295,5 @@ class X509UserMappingTest(TestCase):
         """
 
         self.test_auth_success_views()
-        response = self.c.get(reverse('map'))
+        response = self.c.get(reverse('x509_auth_map'))
         self.assertIn("TEST: False", response.content)

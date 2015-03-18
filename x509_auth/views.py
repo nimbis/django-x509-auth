@@ -92,7 +92,7 @@ class X509CreateView(CreateView):
     model = X509UserMapping
     template_name = 'x509_auth/create.html'
     fields = ['cert_dn']
-    success_url = reverse_lazy('list')
+    success_url = reverse_lazy('x509_auth_list')
 
     def form_valid(self, form):
         """
@@ -110,7 +110,7 @@ class X509DeleteView(DeleteView):
 
     model = X509UserMapping
     template_name = 'x509_auth/delete.html'
-    success_url = reverse_lazy('list')
+    success_url = reverse_lazy('x509_auth_list')
 
     def get_object(self, queryset=None):
         """ Hook to ensure object is owned by request.user. """
