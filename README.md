@@ -56,3 +56,8 @@ have authenticated against the provided backend, and False otherwise.
 A decorator of `X509_required` is available.  It behaves much like
 `login_required` in that it will take you to the auth view (which supports
 'next' as a GET parameter).
+
+Contributing
+------------
+
+See the [Contributing Guidelines](CONTRIBUTING.md).
