@@ -33,11 +33,11 @@ test: check-venv clean
 # code coverage
 #
 
-COVERAGE_INCLUDE='x509_auth/*'
+COVERAGE_ARGS=--source=x509_auth --omit=x509_auth/south_migrations/*
 
 coverage: check-venv
 	coverage erase
-	-coverage run --include=$(COVERAGE_INCLUDE) ./manage.py test
+	-coverage run $(COVERAGE_ARGS) ./manage.py test
 	coverage report
 	coverage html
 	@echo "See ./htmlcov/index.html for coverage report"
