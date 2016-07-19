@@ -27,7 +27,7 @@ flake8: check-venv
 	flake8 $(FLAKE8_OPTS) . | tee flake8.log
 
 test: check-venv clean
-	python manage.py test
+	python -Wall manage.py test
 
 #
 # code coverage
