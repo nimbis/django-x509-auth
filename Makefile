@@ -27,7 +27,7 @@ flake8: check-venv
 	flake8 $(FLAKE8_OPTS) . | tee flake8.log
 
 test: check-venv clean
-	python -Wall manage.py test
+	python -Wall manage.py test -v 2
 
 #
 # code coverage
@@ -37,7 +37,7 @@ COVERAGE_ARGS=--source=x509_auth --omit=x509_auth/south_migrations/*
 
 coverage: check-venv
 	coverage erase
-	-coverage run $(COVERAGE_ARGS) ./manage.py test
+	-coverage run $(COVERAGE_ARGS) ./manage.py test -v 2
 	coverage report
 	coverage html
 	@echo "See ./htmlcov/index.html for coverage report"
