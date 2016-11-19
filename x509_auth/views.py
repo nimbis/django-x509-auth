@@ -12,6 +12,7 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 
 from .models import X509UserMapping
+from .mixins import X509ContextMixin
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +54,7 @@ class X509AuthView(TemplateView):
             return self.render_to_response(context)
 
 
-class X509ListView(ListView):
+class X509ListView(X509ContextMixin, ListView):
     """
     Lists out certificates owned by request.user.  If there is a certificate
     asserted in the request, and we don't have record of it, offers to add it.
@@ -61,20 +62,6 @@ class X509ListView(ListView):
 
     model = X509UserMapping
     template_name = 'x509_auth/list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(X509ListView, self).get_context_data(**kwargs)
-        if (('HTTP_X_SSL_USER_DN' in self.request.META) and
-           ('HTTP_X_SSL_AUTHENTICATED' in self.request.META)):
-            # A key is asserted, see if we already have it
-            certs = X509UserMapping.objects.filter(
-                user=self.request.user,
-                cert_dn=self.request.META['HTTP_X_SSL_USER_DN'])
-            if not certs.exists():
-                for k in ['HTTP_X_SSL_USER_DN', 'HTTP_X_SSL_AUTHENTICATED']:
-                    # Put in the context for possible addition
-                    context[k] = self.request.META[k]
-        return context
 
     def get_queryset(self):
         """
