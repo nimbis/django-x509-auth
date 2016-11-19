@@ -21,5 +21,9 @@ class X509UserMapping(models.Model):
         blank=False,
         unique=True)
 
+    required = models.BooleanField(
+        help_text="This user must authenticate via x509.",
+        default=False)
+
     def __str__(self):
         return "{0}:{1}".format(self.user.username, self.cert_dn)
