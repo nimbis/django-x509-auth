@@ -11,4 +11,5 @@ class X509UserMappingAdmin(admin.ModelAdmin):
     """
     list_display = ('user', 'cert_dn')
 
+
 admin.site.register(X509UserMapping, X509UserMappingAdmin)
