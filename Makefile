@@ -17,12 +17,12 @@ reqs: check-venv
 
 # Show all occurence of same error
 # Exclude the static directory, since it's auto-generated
-PEP8_OPTS=--repeat --exclude=static,south_migrations,migrations,js,doc --show-source
+PEP8_OPTS=--repeat --exclude=static,migrations,js,doc --show-source
 
 pep8: check-venv
 	python setup.py pep8 $(PEP8_OPTS)
 
-FLAKE8_OPTS = --max-complexity 10 --exclude='migrations,south_migrations'
+FLAKE8_OPTS = --max-complexity 10 --exclude='migrations'
 flake8: check-venv
 	flake8 $(FLAKE8_OPTS) . | tee flake8.log
 
@@ -49,7 +49,7 @@ travis-tests: check-venv
 # code coverage
 #
 
-COVERAGE_ARGS=--source=x509_auth --omit=x509_auth/south_migrations/*
+COVERAGE_ARGS=--source=x509_auth
 
 coverage: check-venv
 	coverage erase

@@ -3,7 +3,6 @@ import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-SOUTH_TESTS_MIGRATE = False
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -118,8 +117,6 @@ PROJECT_PATH = os.environ.get('PROJECT_PATH', os.path.join(
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_PATH, 'tests/templates'),
 )
-
-SOUTH_TESTS_MIGRATE = False
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
