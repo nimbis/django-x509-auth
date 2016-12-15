@@ -2,4 +2,4 @@
 
 coverage
 setuptools-pep8
-flake8==2.3.0
+flake8
