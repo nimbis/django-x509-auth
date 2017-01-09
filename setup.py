@@ -16,6 +16,6 @@ setup(
     include_package_data=True,
     test_suite="tests.main",
     install_requires=[
-        'Django',
+        'Django<1.10',
     ],
 )
