@@ -1,3 +1,9 @@
+1.1.0 (2017-01-13):
+
+    * Added Django 1.9 support.
+
+    * Removed South migrations.
+
 1.0.2 (2016-07-18):
 
     * Update Makefile to latest best practices (make release, etc.)
