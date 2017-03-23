@@ -1,5 +1,6 @@
 # Django settings for django-x509-auth project.
 import os
+import copy
 
 DEBUG = True
 
@@ -105,6 +106,13 @@ TEMPLATES = [
         },
     },
 ]
+
+# This setting is used by the "test_auth_fail_template_tag" test.
+# It is a copy of the TEMPLATES setting above, without the request
+# context processor
+BAD_TEMPLATES_SETTING = copy.deepcopy(TEMPLATES)
+BAD_TEMPLATES_SETTING[0]['OPTIONS']['context_processors'].remove(
+    'django.template.context_processors.request')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
