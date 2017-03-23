@@ -222,7 +222,7 @@ class X509UserMappingTest(TestCase):
         factory = RequestFactory()
         request = factory.get('/x509/list')
         request.user = self.user
-        self.assertEqual(request.user.is_authenticated(), True)
+        self.assertEqual(request.user.is_authenticated, True)
 
         # Jam a session in here.  Dictionaries are close enough to sessions.
         # Only your hair dresser knows for sure.
@@ -240,7 +240,7 @@ class X509UserMappingTest(TestCase):
         factory = RequestFactory()
         request = factory.get('/x509/list')
         request.user = self.user
-        self.assertEqual(request.user.is_authenticated(), True)
+        self.assertEqual(request.user.is_authenticated, True)
 
         # Jam a session in here.  Dictionaries are close enough to sessions.
         # Only your hair dresser knows for sure.
@@ -258,7 +258,7 @@ class X509UserMappingTest(TestCase):
         request = factory.get('/x509/list')
         request.user = AnonymousUser()
 
-        self.assertEqual(request.user.is_authenticated(), False)
+        self.assertEqual(request.user.is_authenticated, False)
 
         self.assertEqual(is_X509_authenticated(request), False)
 
@@ -270,7 +270,7 @@ class X509UserMappingTest(TestCase):
         factory = RequestFactory()
         request = factory.get('/x509/list')
         request.user = self.user
-        self.assertEqual(request.user.is_authenticated(), True)
+        self.assertEqual(request.user.is_authenticated, True)
 
         # Jam a session in here.  Dictionaries are close enough to sessions.
         # Only your hair dresser knows for sure.
