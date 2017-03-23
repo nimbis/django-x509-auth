@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 # setup the project
 setup(
     name="django-x509-auth",
-    version="1.1.0",
+    version="2.0.0",
     author="Nimbis Services, Inc.",
     author_email="info@nimbisservices.com",
     description="Django app to facilitate mapping X.509 certificates to User "
