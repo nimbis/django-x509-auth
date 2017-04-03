@@ -8,6 +8,7 @@ from django.test.utils import override_settings
 from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.auth import authenticate
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from .models import X509UserMapping
 from .auth_backend import is_X509_authenticated
@@ -222,7 +223,7 @@ class X509UserMappingTest(TestCase):
         factory = RequestFactory()
         request = factory.get('/x509/list')
         request.user = self.user
-        self.assertEqual(request.user.is_authenticated(), True)
+        self.assertEqual(request.user.is_authenticated, True)
 
         # Jam a session in here.  Dictionaries are close enough to sessions.
         # Only your hair dresser knows for sure.
@@ -240,7 +241,7 @@ class X509UserMappingTest(TestCase):
         factory = RequestFactory()
         request = factory.get('/x509/list')
         request.user = self.user
-        self.assertEqual(request.user.is_authenticated(), True)
+        self.assertEqual(request.user.is_authenticated, True)
 
         # Jam a session in here.  Dictionaries are close enough to sessions.
         # Only your hair dresser knows for sure.
@@ -258,7 +259,7 @@ class X509UserMappingTest(TestCase):
         request = factory.get('/x509/list')
         request.user = AnonymousUser()
 
-        self.assertEqual(request.user.is_authenticated(), False)
+        self.assertEqual(request.user.is_authenticated, False)
 
         self.assertEqual(is_X509_authenticated(request), False)
 
@@ -270,7 +271,7 @@ class X509UserMappingTest(TestCase):
         factory = RequestFactory()
         request = factory.get('/x509/list')
         request.user = self.user
-        self.assertEqual(request.user.is_authenticated(), True)
+        self.assertEqual(request.user.is_authenticated, True)
 
         # Jam a session in here.  Dictionaries are close enough to sessions.
         # Only your hair dresser knows for sure.
@@ -287,12 +288,7 @@ class X509UserMappingTest(TestCase):
         self.assertIn("TEST: True", response.content)
 
     # sans django.core.context_processors.request
-    @override_settings(TEMPLATE_CONTEXT_PROCESSORS=(
-        'django.contrib.auth.context_processors.auth',
-        'django.core.context_processors.i18n',
-        'django.core.context_processors.media',
-        'django.core.context_processors.static',
-    ))
+    @override_settings(TEMPLATES=settings.BAD_TEMPLATES_SETTING)
     def test_auth_fail_template_tag(self):
         """
         Test template tag, but with out the needed context processor.

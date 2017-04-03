@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 register = template.Library()
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def is_X509_authenticated(context):
     try:
         return authed_backend(context['request'])

@@ -1,8 +1,11 @@
 # Django settings for django-x509-auth project.
 import os
+import copy
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+
+BASE_PATH = os.environ.get('BASE_PATH', os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '..')))
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -81,42 +84,47 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '6e-b#&0y4mbwu=)hx7a899p(k+i48(p)@e@^aal8^$pn1xqk$$'
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(BASE_PATH, 'tests/templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.request',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'debug': DEBUG,
+        },
+    },
+]
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.request',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.core.context_processors.request',
-)
+# This setting is used by the "test_auth_fail_template_tag" test.
+# It is a copy of the TEMPLATES setting above, without the request
+# context processor
+BAD_TEMPLATES_SETTING = copy.deepcopy(TEMPLATES)
+BAD_TEMPLATES_SETTING[0]['OPTIONS']['context_processors'].remove(
+    'django.template.context_processors.request')
 
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
 
 ROOT_URLCONF = 'tests.urls'
-
-BASE_PATH = os.environ.get('BASE_PATH', os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..')))
-
-PROJECT_PATH = os.environ.get('PROJECT_PATH', os.path.join(
-    BASE_PATH))
-
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_PATH, 'tests/templates'),
-)
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`

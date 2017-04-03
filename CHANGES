@@ -1,3 +1,7 @@
+2.0.0 (2017-04-03):
+
+    * A minimum version of Django 1.10 is now required.
+
 1.1.0 (2017-01-13):
 
     * Added Django 1.9 support.

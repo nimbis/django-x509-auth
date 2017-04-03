@@ -38,7 +38,7 @@ def is_X509_authenticated(request):
     Check how this user authenticated (did they use our backend?)
     """
     try:
-        return request.user.is_authenticated() and (
+        return request.user.is_authenticated and (
             request.session['_auth_user_backend'] ==
             'x509_auth.auth_backend.AuthenticationBackend')
     except KeyError:
